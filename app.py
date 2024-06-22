@@ -10,6 +10,9 @@ app.config.from_object(Config)
 db.init_app(app)
 ma.init_app(app)
 
+with app.app_context():
+    db.create_all() 
+    
 @app.route('/tareas', methods=['POST'])
 def crear_tarea():
     descripcion=request.json['descripcion']
@@ -29,14 +32,14 @@ def listar_tareas():
 def obtener_tarea(id):
     tarea=Tarea.query.get(id)
     if tarea is None:
-        return jsonify({"Tarea no encontrada"}), 404
+        return jsonify({"mensaje":"Tarea no encontrada"}), 404
     return tarea_esquemas.jsonify(tarea)
 
 @app.route('/tareas/<int:id>', methods=['PUT'])
 def modificar_tarea(id):
     tarea=Tarea.query.get(id)
     if tarea is None:
-        return jsonify({"Tarea no encontrada"}), 404
+        return jsonify({"mensaje":"Tarea no encontrada"}), 404
     
     descripcion=request.json.get('descripcion', tarea.descripcion)
     fecha_maxima=request.json.get('fecha_maxima', tarea.fecha_maxima)
@@ -50,11 +53,11 @@ def modificar_tarea(id):
 def eliminar_tarea(id):
     tarea=Tarea.query.get(id)
     if tarea is None:
-        return jsonify({"Tarea no encontrada"}), 404
+        return jsonify({"mensaje":"Tarea no encontrada"}), 404
     
     db.session.delete(tarea)
     db.session.commit()
-    return jsonify({"Tarea eliminada"})
+    return jsonify({"mensaje":"Tarea eliminada"})
 
 if __name__=='__main__':
     app.run(debug=True)
