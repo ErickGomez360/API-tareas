@@ -5,8 +5,8 @@ class Tarea(db.Model):
     
     id=db.Column(db.Interger, primary_key=True)
     descripcion=db.Column(db.String(300),nullable=False)
-    fecha_max=db.Column(db.Date, nullable=False)
+    fecha_maxima=db.Column(db.Date, nullable=False)
     
-    def __init__(self,descripcion,fecha_max):
+    def __init__(self,descripcion,fecha_maxima):
         self.descripcion=descripcion
-        self.fecha_max=fecha_max
+        self.fecha_maxima=fecha_maxima
